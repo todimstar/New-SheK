@@ -4,8 +4,8 @@ using UnityEngine;
 public class FPSController : MonoBehaviour
 {
     /* dependencies */
-    public MoveHandler moveHandler;
-    public ViewHandler viewHandler;
+    [SerializeField]private MoveHandler moveHandler;
+    [SerializeField]private ViewHandler viewHandler;
 
     private void Awake()
     {
