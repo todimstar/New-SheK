@@ -3,7 +3,7 @@ using UnityEngine;
 [System.Serializable]
 public class ViewHandler
 {
-    [System.NonSerialized]public Transform camera;     // 依赖的摄像机
+    public Transform camera;     // 依赖的摄像机
     private float currentRotationX = 0f; // 当前的仰角
     [Header("Properties on the look")]
     public float dRotation = 100f;     // 旋转速度

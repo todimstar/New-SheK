@@ -372,6 +372,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveHandler:
+    controller: {fileID: 0}
     velocityXZ: {x: 0, y: 0, z: 0}
     velocityY: {x: 0, y: 0, z: 0}
     dVelocity: 50
@@ -379,6 +380,7 @@ MonoBehaviour:
     maxRun: 20
     maxJump: 1.5
   viewHandler:
+    camera: {fileID: 0}
     dRotation: 100
     upperAngle: 80
     downAngle: 75

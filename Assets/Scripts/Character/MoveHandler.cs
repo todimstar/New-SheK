@@ -3,7 +3,7 @@ using UnityEngine;
 [System.Serializable]
 public class MoveHandler
 {
-    [System.NonSerialized] public CharacterController controller;      // 依赖的组件
+    public CharacterController controller;      // 依赖的组件
 
     /* 空间移动的处理 */
     public Vector3 velocityXZ = Vector3.zero;

@@ -4,14 +4,14 @@ using UnityEngine;
 public class FPSController : MonoBehaviour
 {
     /* dependencies */
-    [SerializeField]private MoveHandler moveHandler;
-    [SerializeField]private ViewHandler viewHandler;
+    [SerializeField] private MoveHandler moveHandler;
+    [SerializeField] private ViewHandler viewHandler;
 
     private void Awake()
     {
-        moveHandler.controller=GetComponent<CharacterController>();
+        moveHandler.controller = GetComponent<CharacterController>();
 
-        viewHandler.camera=GameObject.Find("camera").transform;
+        viewHandler.camera = GameObject.Find("camera").transform;
     }
     private void Update()
     {
