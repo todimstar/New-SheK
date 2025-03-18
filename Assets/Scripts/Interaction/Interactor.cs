@@ -12,6 +12,7 @@ public class Interactor : MonoBehaviour
 
     private void Update()
     {
+        // 拿到当前的交互物体，并调用交互方法
         detector.GetCurrentInteractable()?.OnInteract(this);
     }
 }

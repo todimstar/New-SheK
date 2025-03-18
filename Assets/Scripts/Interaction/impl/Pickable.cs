@@ -2,20 +2,20 @@ using UnityEngine;
 
 public class Pickable : MonoBehaviour, IInteractable
 {
-    public bool isInteractable = true;
-    public bool IsInteractable()
-    {
-        return isInteractable;
-    }
+    public bool IsInteractable{ get; set; }=true;
+
     public void OnInteract(Interactor interactor)
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            isInteractable = false;
+            IsInteractable = false;
             Debug.Log("Picked " + gameObject.name);
             Destroy(gameObject);
         }
     }
-    public void OnDetectionEnter() { }
+    public void OnDetectionEnter()
+    {
+        Debug.Log("可以按 E 捡起");
+    }
     public void OnDetectionExit() { }
 }
