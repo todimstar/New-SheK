@@ -442,6 +442,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a82a6a9a1e04c8478d25337b922c228, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isActive: 1
   questData: {fileID: 11400000, guid: 976b7635bc4b22c4db8c3e67c245b1a2, type: 2}
 --- !u!1 &488976593
 GameObject:
@@ -498,7 +499,7 @@ MonoBehaviour:
     dVelocity: 50
     maxWalk: 10
     maxRun: 20
-    maxJump: 1.5
+    maxJump: 0.5
   viewHandler:
     camera: {fileID: 0}
     dRotation: 100
