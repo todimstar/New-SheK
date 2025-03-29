@@ -1,56 +1,98 @@
-# RPG游戏UI系统
+# Unity 3DRPG UI系统
 
-本项目是一个RPG游戏的UI系统，用于显示游戏中各种界面元素，包括游戏内UI、菜单UI、对话UI等。
+这是一个为3DRPG游戏设计的简单而高效的UI管理系统。该系统采用面板管理的设计模式，提供了灵活的UI界面管理功能。
 
 ## 系统架构
 
-UI系统采用模块化设计，主要包含以下组件：
+本UI系统主要由以下组件构成：
 
-1. **UIManager**: 全局UI管理器，负责UI面板的显示、隐藏和切换
-2. **UIPanel**: 所有UI面板的基类，提供通用功能
-3. **具体UI面板**:
-   - GameplayUI: 游戏主界面，显示角色状态、心情条等
-   - MainMenuUI: 游戏主菜单
-   - SettingsUI: 设置界面
-   - DialogueUI: 对话界面
-   - QuestUI: 任务界面
-   - InventoryUI: 物品栏界面
+### 1. BasePanel
 
-## 功能说明
+所有UI面板的基类，提供了基础的面板操作功能：
+- `Init()`: 将面板注册到PanelManager
+- `Show()`: 显示面板
+- `Hide()`: 隐藏面板
 
-### 游戏主界面 (GameplayUI)
-- 心情条: 使用Microlight的MicroBar资源实现
-- 状态显示: 显示角色的生命值、能量等
+### 2. PanelManager
 
-- 任务提示: 显示当前任务简要信息
+UI面板管理器，负责所有面板的管理，使用单例模式实现：
+- 面板注册与存储
+- 面板显示与隐藏
+- 面板层级管理（Normal层、PopWindow层）
+- 使用栈结构管理同层级面板显示顺序
 
-### 主菜单 (MainMenuUI)
-- 开始游戏
-- 设置
-- 退出游戏
+### 3. 具体面板实现
 
-### 设置界面 (SettingsUI)
-- 音量控制
-- 画面设置
-- 按键设置
-
-
-### 任务界面 (QuestUI)
-- 当前任务列表
-- 任务详情
-
+在`Impl`目录下包含了多个具体的面板实现：
+- `StartUI`: 游戏开始界面
+- `SettingUI`: 游戏设置界面
+- `PlayerHUDUI`: 玩家HUD界面
+- `PlayStopUI`: 游戏暂停界面
 
 ## 使用方法
 
-1. 所有UI面板均由UIManager统一管理
-2. 通过UIManager.Show<T>()方法显示指定面板
-3. 通过UIManager.Hide<T>()方法隐藏指定面板
-4. 通过UIManager.Toggle<T>()方法切换指定面板的显示状态
+### 创建新面板
 
-## 技术细节
+1. 创建一个继承自`BasePanel`的类
+2. 在`Awake()`或`Start()`方法中调用`Init()`
+3. 根据需要重写`Show()`和`Hide()`方法
 
-- 使用单例模式实现UIManager
-- 使用工厂模式创建UI面板
-- 使用观察者模式响应游戏事件
-- 使用状态模式管理UI状态
+```csharp
+public class MyNewPanel : BasePanel
+{
+    private void Awake()
+    {
+        Init(); // 注册到PanelManager
+    }
+    
+    // 可以重写Show和Hide方法以添加自定义行为
+    public override void Show()
+    {
+        base.Show();
+        // 自定义显示逻辑
+    }
+}
+```
+
+### 显示和隐藏面板
+
+```csharp
+// 显示面板
+PanelManager.Instance.OpenPanel(typeof(MyNewPanel));
+
+// 显示弹窗层面板
+PanelManager.Instance.OpenPanel(typeof(MyNewPanel), PanelManager.PanelLayer.PopWindow);
+
+// 隐藏面板
+PanelManager.Instance.ClosePanel(typeof(MyNewPanel));
+
+// 隐藏所有面板
+PanelManager.Instance.CloseAllPanels();
+```
+
+### 在Unity编辑器中设置
+
+1. 创建一个空物体，添加PanelManager组件
+2. 为每个UI面板创建预制体并添加对应的面板脚本
+3. 确保在场景加载时PanelManager优先初始化
+
+## 系统特点
+
+- **层级管理**：支持Normal和PopWindow两个层级，方便管理不同优先级的UI
+- **栈结构**：采用栈结构管理同层级UI，便于实现UI导航和返回功能
+- **松耦合**：面板之间解耦，每个面板只需关注自身逻辑
+- **易扩展**：可以方便地添加新的面板和UI功能
+
+## 已知问题
+
+- SettingPanel的Back功能与面板管理器的栈结构存在兼容问题
+- PlayStopPanel的暂停功能尚未完成
+- 部分面板之间的连接存在问题
+
+## 下一步计划
+
+- 完善PanelManager的RegisterPanel方法
+- 实现PlayStopPanel的暂停功能
+- 优化面板之间的切换逻辑
+- 添加面板动画过渡效果
 

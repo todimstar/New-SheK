@@ -6,98 +6,90 @@ using UnityEngine;
 /// 游戏中的暂停面板_也是Normal型面板
 /// </summary>
 /// <remarks>
-/// 按照目前暂停的设计，脚本必须绑定在Canvas下的PlayStopPanel上
+/// 使用PanelManager管理面板的显示和隐藏
+/// 按ESC键可以打开和关闭暂停面板
 /// </remarks>
 public class PlayStopUI : BasePanel
 {
     [SerializeField] private GameObject settingButton;//设置按钮
     [SerializeField] private GameObject closeButton;//返回按钮
-    [SerializeField] private GameObject playStopPanel = null;//暂停面板
-    [SerializeField] private bool stopUIShow = false;//是否已开启过stop面板
+    
+    // 是否已暂停游戏
+    public static bool isGamePaused = false;
 
     void Start()
     {
+        // 添加调试日志，验证类型
+        Debug.Log("PlayStopUI类型： " + this.GetType().Name);
+        Debug.Log("PlayStopUI类型全名： " + this.GetType().FullName);
+        Debug.Log("BasePanel类型： " + typeof(BasePanel).Name);
+        Debug.Log("是否继承自BasePanel: " + (this is BasePanel));
+        
+        // 确保正确注册
+        Init(); // 注册到PanelManager
         // 默认隐藏该弹窗
-        gameObject.SetActive(false);
-        // 防止playStopPanel没有手动拖过，为空
-        if(playStopPanel == null){
-            Transform canvas = transform.parent;
-            GameObject playStopPanel = canvas.Find("PlayStopPanel").gameObject;
+        Hide();
+        
+        // 注册按钮事件
+        if (closeButton != null)
+        {
+            closeButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(OnCloseButtonClick);
         }
         
-    }
-
-    void Update()//应该需要一个StuteManager来管理游戏状态，其中的GameStatus枚举类型包括：游戏中、游戏暂停、游戏结束
-    {   
-        if(stopUIShow){
-            // 暂停键
-            if(Input.GetKeyDown(KeyCode.Escape)){
-                //按下ESC键
-
-                // 检查是否找到并设置为活动状态
-                if (playStopPanel != null)
-                {
-                    playStopPanel.SetActive(false);
-                    stopUIShow = false;
-                }
-                else
-                {
-                    Debug.LogError("PlayStopPanel 没在同一个 Canvas下找到");
-                }
-            }
+        if (settingButton != null)
+        {
+            settingButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(OnSettingButtonClick);
         }
-        else if(Input.GetKeyDown(KeyCode.Escape)){
-            //按下ESC键
-
-            // Check if found and set it active
-            if (playStopPanel != null)
-            {
-                playStopPanel.SetActive(true);
-                stopUIShow = true;
-            }
-            else
-            {
-                Debug.LogError("PlayStopPanel 没在同一个 Canvas下找到");
-            }
-        }
-        
     }
 
 
     /// <summary>
+    /// 暂停游戏
+    /// </summary>
+    public void PauseGame()
+    {
+        // 暂停游戏时间
+        Time.timeScale = 0f;
+        isGamePaused = true;
+        
+        Debug.Log("游戏已暂停");
+    }
+    
+    /// <summary>
+    /// 恢复游戏
+    /// </summary>
+    public void ResumeGame()
+    {
+        // 恢复游戏时间
+        Time.timeScale = 1f;
+        isGamePaused = false;
+        
+        Debug.Log("游戏已恢复");
+    }
+
+    /// <summary>
     /// 关闭按钮点击事件
     /// </summary>
-    public void OnCloseButtonClick(){
-        // Close button click event
+    public void OnCloseButtonClick()
+    {
         Debug.Log("关闭按钮点击事件");
-        // Close the PlaySettingPanel
-        playStopPanel.SetActive(false);
+        // 关闭面板并暂停游戏
+        PanelManager.Instance.ClosePanel(typeof(PlayStopUI),PanelManager.PanelLayer.PopWindow);
+        
+        ResumeGame();
     }
 
     /// <summary>
     /// 设置按钮点击事件
     /// </summary>
     /// <remarks>
-    /// 转向设置面板
-    /// 寻找同一个 Canvas 下的 SettingPanel
-    /// 检查是否找到并设置为活动状态
+    /// 打开设置面板
     /// </remarks>
-    public void OnSettingButtonClick(){
-        
+    public void OnSettingButtonClick()
+    {
         Debug.Log("设置按钮点击事件");
-        // 转向设置面板
-        // 寻找同一个 Canvas 下的 SettingPanel
-        Transform canvas = transform.parent;
-        GameObject settingPanel = canvas.Find("SettingPanel").gameObject;
-
-        // 检查是否找到并设置为活动状态
-        if (settingPanel != null)
-        {
-            settingPanel.SetActive(true);
-        }
-        else
-        {
-            Debug.LogError("SettingPanel 没在同一个 Canvas下找到");
-        }
+        // 打开设置面板
+        PanelManager.Instance.OpenPanel(typeof(SettingUI));
     }
+    
 }

@@ -6,7 +6,8 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class StartUI : BasePanel
 {
-    private void Awake() {
+    private void Awake()
+    {
         Init();
         // 隐藏所有面板
         PanelManager.Instance.CloseAllPanels();
@@ -14,25 +15,35 @@ public class StartUI : BasePanel
         PanelManager.Instance.OpenPanel(typeof(StartUI));
     }
 
-    public void StartBtn_Event_Open()
+    public void Click_StartBtn()
     {
         // 开始游戏按钮点击事件
         Debug.Log("开始游戏按钮点击事件");
+
+        // 加载场景
         LoadGameScene();
     }
 
-    public void OnContinueGameButtonClick()
+
+    public void Click_ContiueBtn()
     {
         // 继续游戏按钮点击事件
         Debug.Log("继续游戏按钮点击事件");
         //之后接到存档系统，再进行处理
     }
 
-    public void SettingtBtn_Event_Open()
+    public void Click_SettingBtn()
     {
         // 设置按钮点击事件
         Debug.Log("设置按钮点击事件");
-        PanelManager.Instance.OpenPanel(typeof(SettingUI));
+        PanelManager.Instance.OpenPanel(typeof(StartSettingUI));
+    }
+
+    public void Click_ExitBtn()
+    {
+        // 退出按钮点击事件
+        Debug.Log("退出按钮点击事件");
+        Application.Quit();
     }
 
     /// <summary>
