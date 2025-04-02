@@ -18,10 +18,6 @@ public class QuestManager : MonoBehaviour
             _instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        // 监听 任务目标注册事件
-        GameEventBus.Instance.Subscribe<RegisterQuestObjective>(
-            RegisterQuestObjectiveHandler
-        );
         // 监听 任务进度更新事件
         GameEventBus.Instance.Subscribe<UpdateQuestProgress>(
             UpdateQuestProgressHandler
@@ -30,10 +26,6 @@ public class QuestManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        // 取消监听 任务目标注册事件
-        GameEventBus.Instance.Unsubscribe<RegisterQuestObjective>(
-            RegisterQuestObjectiveHandler
-        );
         // 取消监听 任务进度更新事件
         GameEventBus.Instance.Unsubscribe<UpdateQuestProgress>(
             UpdateQuestProgressHandler
@@ -47,16 +39,6 @@ public class QuestManager : MonoBehaviour
     {
         UpdateQuestProgress(data.questID);
         Debug.Log($"更新任务 {data.questID} 进度");
-    }
-    /// <summary>
-    /// 任务目标注册 事件处理
-    /// </summary>
-    /// <param name="data">封装的任务目标信息</param>
-    private void RegisterQuestObjectiveHandler(RegisterQuestObjective data)
-    {
-        RegisterQuestObjective(data.questObjective);
-
-        Debug.Log($"注册 {data.questObjective}");
     }
 
     /// <summary>

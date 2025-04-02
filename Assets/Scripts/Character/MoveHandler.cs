@@ -22,8 +22,8 @@ public class MoveHandler
     {
         // 获得标准化的方向
         Vector3 direction = (
-            Input.GetAxis("Horizontal") * controller.transform.right +
-            Input.GetAxis("Vertical") * controller.transform.forward
+            Input.GetAxisRaw("Horizontal") * controller.transform.right +
+            Input.GetAxisRaw("Vertical") * controller.transform.forward
             ).normalized;
 
         // 可能的最大速度
@@ -31,7 +31,7 @@ public class MoveHandler
 
         if (controller.isGrounded)  // 如果在地面上
         {
-            velocityY.y = Input.GetAxis("Jump") != 0 ?
+            velocityY.y = Input.GetAxisRaw("Jump") != 0 ?
                 Mathf.Sqrt(2 * -maxJump * Physics.gravity.y) :  // sqrt 2 * g * h
                 -0.05f;     // 在地面时，给下压力
         }
@@ -54,9 +54,22 @@ public class MoveHandler
     /// <param name="targetDirection">目标速度</param>
     /// <param name="dVelocity">加速度</param>
     /// <returns></returns>
-    private Vector3 CalculateVelocity(Vector3 currentVelocity, Vector3 targetDirection, float dVelocity)
+    private Vector3 CalculateVelocity(Vector3 currentVelocity, Vector3 targetVelocity, float dVelocity)
     {
+        Vector3 difference = targetVelocity - currentVelocity;
+        if (difference.magnitude < 0.1f)
+        {
+            return currentVelocity * 0.9f; // 逐渐减小速度
+        }
+
         // v + a * t
-        return currentVelocity + (targetDirection - currentVelocity).normalized * dVelocity * Time.deltaTime;
+        Vector3 v = currentVelocity + difference.normalized * dVelocity * Time.deltaTime;
+
+        if (v.magnitude < 0.1f)
+        {
+            v = targetVelocity;
+        }
+
+        return v;
     }
 }

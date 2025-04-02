@@ -1,0 +1,42 @@
+{
+    "dialogue": [
+        {
+            "id": "entry",
+            "lines": [
+                {
+                    "speaker": "A",
+                    "text": "Hello"
+                },
+                {
+                    "speaker": "B",
+                    "text": "Hi"
+                },
+                {
+                    "speaker": "A",
+                    "text": "How are you?"
+                },
+                {
+                    "speaker": "B",
+                    "text": "I'm fine, thanks"
+                },
+                {
+                    "speaker": "A",
+                    "text": "That's great"
+                },
+                {
+                    "speaker": "B",
+                    "text": "Yeah, me too"
+                },
+                {
+                    "speaker": "A",
+                    "text": "See you later"
+                },
+                {
+                    "speaker": "B",
+                    "text": "Bye"
+                }
+        ],
+        "options": []
+    }
+]
+}

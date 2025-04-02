@@ -9,6 +9,6 @@ public abstract class QuestObjective : MonoBehaviour
     protected void RegisterQuestObjective()
     {
         // 将自己注册到对应的任务中
-        GameEventBus.Instance.Trigger(new RegisterQuestObjective(this));
+        QuestManager.Instance.RegisterQuestObjective(this);
     }
 }

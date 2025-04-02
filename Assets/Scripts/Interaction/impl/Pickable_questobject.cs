@@ -12,7 +12,7 @@ public class Pickable_questobject : QuestObjective, IInteractable
 
     private void Start()
     {
-        GameEventBus.Instance.Trigger(new RegisterQuestObjective(this));
+        RegisterQuestObjective();
     }
 
     public void OnInteract(Interactor interactor)
