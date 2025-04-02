@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,7 +12,7 @@ public class PlayerHUDUI : BasePanel
     [SerializeField] private BarManager moodManager;
 
     [Header("Mood Text")]
-    [SerializeField] TMPro.TextMeshPro moodText;  // 心情值文本
+    [SerializeField] GameObject moodText;  // 心情值文本
 
     /// <summary>
     /// 心情状态枚举
@@ -136,7 +137,8 @@ public class PlayerHUDUI : BasePanel
         // 更新UI文本
         if (moodText != null)
         {
-            moodText.text = $"心情: {stateText} ({Mathf.RoundToInt(newValue)}%)";
+            TextMeshProUGUI tmpText = moodText.GetComponent<TextMeshProUGUI>();
+            tmpText.text = $"心情: {stateText} ({Mathf.RoundToInt(newValue)}%)";
         }
 
         // 日志记录

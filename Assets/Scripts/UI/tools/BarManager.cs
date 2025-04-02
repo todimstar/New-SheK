@@ -16,6 +16,45 @@ public class BarManager : MonoBehaviour
     const float MAX_HP = 100f;
     float _hp = MAX_HP;
 
+    #region Debug and testing controls
+    // Debug and testing controls
+    [Header("Debug - Testing Only")]
+    [SerializeField] private bool enableTestingControls = true;
+    [SerializeField] private UnityEngine.UI.Button increaseMoodButton;
+    [SerializeField] private UnityEngine.UI.Button decreaseMoodButton;
+    [SerializeField] private float testMoodChangeAmount = 10f;
+
+    private void Awake()
+    {
+        // Setup test buttons
+        if (enableTestingControls)
+        {
+            if (increaseMoodButton != null)
+                increaseMoodButton.onClick.AddListener(TestIncreaseMood);
+            
+            if (decreaseMoodButton != null)
+                decreaseMoodButton.onClick.AddListener(TestDecreaseMood);
+            
+        }
+    }
+
+    // Test methods
+    #if UNITY_EDITOR || DEVELOPMENT_BUILD
+    private void TestIncreaseMood()
+    {
+        AddMood(testMoodChangeAmount);
+        Debug.Log($"[TEST] Increased mood by {testMoodChangeAmount}. New value: {_hp}");
+    }
+
+    private void TestDecreaseMood()
+    {
+        ReduceMood(testMoodChangeAmount);
+        Debug.Log($"[TEST] Decreased mood by {testMoodChangeAmount}. New value: {_hp}");
+    }
+    #endif
+
+    #endregion
+
     float HP
     {
         get => _hp;
