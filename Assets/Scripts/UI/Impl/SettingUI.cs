@@ -10,12 +10,12 @@ public class SettingUI : BasePanel
     // 音效开关状态    
     private bool soundOn = true;
 
-    private void Start()
+    private void Awake()
     {
-        // 添加调试日志，验证类型
-        Debug.Log("SettingUI类型： " + this.GetType().Name);
-        Debug.Log("SettingUI类型全名： " + this.GetType().FullName);
-        Debug.Log("是否继承自BasePanel: " + (this is BasePanel));
+        // // 添加调试日志，验证类型
+        // Debug.Log("SettingUI类型： " + this.GetType().Name);
+        // Debug.Log("SettingUI类型全名： " + this.GetType().FullName);
+        // Debug.Log("是否继承自BasePanel: " + (this is BasePanel));
     
         // 确保正确注册到PanelManager
         Init();
@@ -39,7 +39,14 @@ public class SettingUI : BasePanel
     [SerializeField] private GameObject btn_exit;
     [SerializeField] private GameObject soundButtonText;
 
-    private void btn_backEvent_closeSettingUI(){
+    /// <summary>
+    /// 返回按钮点击事件
+    /// </summary>
+    /// <remarks>
+    /// 很栈的返回，直接关闭自己，调用Setting之前不需要关闭调用者
+    /// 其可复用性强，哪都能放
+    /// </remarks>
+    private void btn_backEvent_closeSettingUI(){    
         PanelManager.Instance.ClosePanel(typeof(SettingUI));
     }
     
@@ -124,7 +131,8 @@ public class SettingUI : BasePanel
     /// </summary>
     private void btn_exitEvent(){
         Debug.Log("退出按钮点击事件");
-        Application.Quit();
+        PanelManager.Instance.CloseAllPanels();
+        PanelManager.Instance.OpenPanel(typeof(StartUI));
     }
 
     /// <summary>

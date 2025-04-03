@@ -17,13 +17,13 @@ public class PlayStopUI : BasePanel
     // 是否已暂停游戏
     public static bool isGamePaused = false;
 
-    void Start()
+    void Awake()
     {
-        // 添加调试日志，验证类型
-        Debug.Log("PlayStopUI类型： " + this.GetType().Name);
-        Debug.Log("PlayStopUI类型全名： " + this.GetType().FullName);
-        Debug.Log("BasePanel类型： " + typeof(BasePanel).Name);
-        Debug.Log("是否继承自BasePanel: " + (this is BasePanel));
+        // // 添加调试日志，验证类型
+        // Debug.Log("PlayStopUI类型： " + this.GetType().Name);
+        // Debug.Log("PlayStopUI类型全名： " + this.GetType().FullName);
+        // Debug.Log("BasePanel类型： " + typeof(BasePanel).Name);
+        // Debug.Log("是否继承自BasePanel: " + (this is BasePanel));
         
         // 确保正确注册
         Init(); // 注册到PanelManager

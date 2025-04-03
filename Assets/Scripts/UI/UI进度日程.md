@@ -82,8 +82,19 @@ StartSettingUI返回功能正常，待添加有效设置功能
 2025.04.02 16:15
 修改UI系统，简化为单一场景，可能之后的场景切换变为坐标值变化
 修改需求：
-   开始游戏到游戏中UI收进GamingScene里，
-   暴露任务接口，
-   统一设置页面为一个，
-   做个对话UI，
+   开始游戏到游戏中UI收进GamingScene里，     ✓
+   暴露任务接口，  √       在HUD加，stop面板内放置存档；本来想分离stop面板为一个单独按钮，使HUD面板在右上角有退出和设置按钮，
+                           但是发现那样又要在setting面板开启期间也对isGamePause操作，还是直接本来的就好了
+   统一设置页面为一个，   ✓
+   做个对话UI，          半√
    存档系统实验(存进度、设置static、角色位置vector3)(主要是跟对话系统融合)
+   留存心情值系统通过一个static
+
+修改途中问题：
+   1.收为一个场景时，StartUI进入HUD后再通过SettingUI返回StartUI再进入时Time Scale还是保持之前打开StopUI时的0，也许需要每次从StartUI进入时变更Time Scale。
+      注：不能直接粗暴的改为每次加载HUD时都将Time为1，因为从HUD可能在其他时候被再次加载，比如打开关闭SettingUi时会因为都是Normal层UI相互调用对方的Show和Hide
+   -已成功修复，在StartUI里恢复TimeScale和StopUI的isGamePaused属性
+   2.多添加了stop按钮的图标更新，才发现原来没考虑到当stop面板弹出时玩家还可以点击未被遮住的stop按钮，导致无反应甚至多开了很多个stop面板。
+   -已修复：现在OnStopBtnClick根据isGamePause执行开关面板修复了这个问题，遗留问题：代码略有冗余，可以再抽象开关stop面板的函数，但是可能导致使用者不清晰和增加函数调用开销
+   3.成功对接对话系统，使用ai辅助理解对话系统，成功为对话场景打上整合补丁
+   4.成功暴露任务接口

@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class StartUI : BasePanel
 {
-    private void Awake()
+    private void Start()
     {
         Init();
         // 隐藏所有面板
@@ -21,7 +21,14 @@ public class StartUI : BasePanel
         Debug.Log("开始游戏按钮点击事件");
 
         // 加载场景
-        LoadGameScene();
+        // LoadGameScene();
+
+        //关闭开始面板并显示HUD
+        PanelManager.Instance.ClosePanel(typeof(StartUI));
+        PanelManager.Instance.OpenPanel(typeof(PlayerHUDUI));
+        // 恢复游戏时间
+        Time.timeScale = 1f;
+        PlayStopUI.isGamePaused = false;
     }
 
 
@@ -36,14 +43,15 @@ public class StartUI : BasePanel
     {
         // 设置按钮点击事件
         Debug.Log("设置按钮点击事件");
-        PanelManager.Instance.OpenPanel(typeof(StartSettingUI));
+        PanelManager.Instance.OpenPanel(typeof(SettingUI)); //2025.04.02 统一设置面板
     }
 
     public void Click_ExitBtn()
     {
         // 退出按钮点击事件
         Debug.Log("退出按钮点击事件");
-        Application.Quit();
+        //测试一下关闭后有没有多余的东西
+        PanelManager.Instance.ClosePanel(typeof(StartUI));
     }
 
     /// <summary>
@@ -53,9 +61,9 @@ public class StartUI : BasePanel
     /// 需要依靠场景管理器加载场景，在Build Settings中先设置好场景顺序。
     /// 确保在Build Settings中已正确设置场景顺序，否则可能加载错误的场景。
     /// </remarks>
-    private void LoadGameScene()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        Debug.Log("加载游戏场景");
-    }
+    // private void LoadGameScene()
+    // {
+    //     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    //     Debug.Log("加载游戏场景");
+    // }
 }

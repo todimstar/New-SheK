@@ -76,7 +76,7 @@ public class PanelManager : MonoBehaviour
         }
     }
 
-    #region 切换场景时用于销毁为空的已注册的面板
+    /*#region 切换场景时用于销毁为空的已注册的面板
 
     // 在PanelManager类中添加
     private void OnEnable()
@@ -128,6 +128,7 @@ public class PanelManager : MonoBehaviour
     }
 
     #endregion
+    */
 
     /// <summary>
     /// UI层次对应的面板栈
