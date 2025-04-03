@@ -24,6 +24,7 @@ public class StartUI : BasePanel
         // LoadGameScene();
 
         //关闭开始面板并显示HUD
+        PanelManager.Instance.CloseAllPanels();
         PanelManager.Instance.ClosePanel(typeof(StartUI));
         PanelManager.Instance.OpenPanel(typeof(PlayerHUDUI));
         // 恢复游戏时间

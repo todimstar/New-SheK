@@ -13,7 +13,7 @@ public class PlayStopUI : BasePanel
 {
     [SerializeField] private GameObject settingButton;//设置按钮
     [SerializeField] private GameObject closeButton;//返回按钮
-    
+
     // 是否已暂停游戏
     public static bool isGamePaused = false;
 
@@ -24,18 +24,18 @@ public class PlayStopUI : BasePanel
         // Debug.Log("PlayStopUI类型全名： " + this.GetType().FullName);
         // Debug.Log("BasePanel类型： " + typeof(BasePanel).Name);
         // Debug.Log("是否继承自BasePanel: " + (this is BasePanel));
-        
+
         // 确保正确注册
         Init(); // 注册到PanelManager
         // 默认隐藏该弹窗
         Hide();
-        
+
         // 注册按钮事件
         if (closeButton != null)
         {
             closeButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(OnCloseButtonClick);
         }
-        
+
         if (settingButton != null)
         {
             settingButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(OnSettingButtonClick);
@@ -51,10 +51,10 @@ public class PlayStopUI : BasePanel
         // 暂停游戏时间
         Time.timeScale = 0f;
         isGamePaused = true;
-        
+
         Debug.Log("游戏已暂停");
     }
-    
+
     /// <summary>
     /// 恢复游戏
     /// </summary>
@@ -63,7 +63,7 @@ public class PlayStopUI : BasePanel
         // 恢复游戏时间
         Time.timeScale = 1f;
         isGamePaused = false;
-        
+
         Debug.Log("游戏已恢复");
     }
 
@@ -74,8 +74,8 @@ public class PlayStopUI : BasePanel
     {
         Debug.Log("关闭按钮点击事件");
         // 关闭面板并暂停游戏
-        PanelManager.Instance.ClosePanel(typeof(PlayStopUI),PanelManager.PanelLayer.PopWindow);
-        
+        PanelManager.Instance.ClosePanel(typeof(PlayStopUI), PanelManager.PanelLayer.PopWindow);
+
         ResumeGame();
     }
 
@@ -88,8 +88,10 @@ public class PlayStopUI : BasePanel
     public void OnSettingButtonClick()
     {
         Debug.Log("设置按钮点击事件");
+        // 隐藏当前暂停面板（不关闭）
+        PanelManager.Instance.ClosePanel(typeof(PlayStopUI), PanelManager.PanelLayer.PopWindow);
         // 打开设置面板
         PanelManager.Instance.OpenPanel(typeof(SettingUI));
     }
-    
+
 }
