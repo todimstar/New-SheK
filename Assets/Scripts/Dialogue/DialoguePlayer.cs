@@ -45,6 +45,10 @@ public class DialoguePlayer : MonoBehaviour
 
     private void StartDialogue(DialogueNode node)
     {
+        //----此处修改过源代码
+        // 显示对话UI
+        GameEventBus.Instance.Trigger(new ShowDialogueUI());
+        
         currentNode = node;
         NextDialogue();
     }
@@ -91,6 +95,9 @@ public class DialoguePlayer : MonoBehaviour
         Debug.Log("某次对话结束");
         currentNode = null;
         currentLineIndex = -1;
+
+         // 隐藏对话UI---此处修改过源代码
+        GameEventBus.Instance.Trigger(new HideDialogueUI());
     }
 
 }
