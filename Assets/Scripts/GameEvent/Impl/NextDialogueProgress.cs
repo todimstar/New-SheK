@@ -1,4 +1,7 @@
+using UnityEngine;
+
 public struct NextDialogueProgress : IEvent
 {
-    public void OnEvent(){}
+    public void OnEvent(){
+    }
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 public struct UpdateQuestProgress : IEvent
 {
     public void OnEvent(){
-        Debug.Log("更新任务进度");
+        
     }
     /// <summary>
     /// 任务ID

@@ -25,18 +25,45 @@
                 },
                 {
                     "speaker": "B",
-                    "text": "Yeah, me too"
-                },
-                {
-                    "speaker": "A",
-                    "text": "See you later"
-                },
-                {
-                    "speaker": "B",
                     "text": "Bye"
                 }
         ],
-        "options": []
+        "options": [
+            {
+                "optionText":"option1",
+                "nextNodeId":"node1"
+            },
+            {
+                "optionText":"option2",
+                "nextNodeId":"node2"
+            },
+            {
+                "optionText":"重复",
+                "nextNodeId":"entry"
+            }
+        ]
+    },
+    {
+        "id": "node1",
+        "lines": [
+            {
+                "speaker": "A",
+                "text": "This is node1"
+            }
+        ],
+        "options": [
+        ]
+    },
+    {
+        "id": "node2",
+        "lines": [
+            {
+                "speaker": "A",
+                "text": "This is node2"
+            }
+        ],
+        "options": [
+        ]
     }
 ]
 }

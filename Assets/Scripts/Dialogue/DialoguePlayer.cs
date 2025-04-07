@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using DG.Tweening.Plugins.Options;
 using UnityEngine;
 
 public class DialoguePlayer : MonoBehaviour
@@ -22,44 +23,61 @@ public class DialoguePlayer : MonoBehaviour
         GameEventBus.Instance.Subscribe<NextDialogueProgress>(
             NextDialogueProgressHandler
         );
+        GameEventBus.Instance.Subscribe<ChooseDialogueOption>(
+            ChooseDialogueOptionHandle
+        );
     }
 
-    private void NextDialogueProgressHandler(NextDialogueProgress e){
+    private void NextDialogueProgressHandler(NextDialogueProgress e)
+    {
         NextDialogue();
+    }
+    private void ChooseDialogueOptionHandle(ChooseDialogueOption e)
+    {
+        UpdateDialogue(e.optionIndex);
     }
 
     private DialogueData currentDialogueData;
-    
+
     public void LoadDialogueData(DialogueData dialogueData)
     {
-        currentDialogueData=dialogueData;
+        currentDialogueData = dialogueData;
         // 下面的NextDialogue应该在ui的show函数调用一次的，这里只是用来测试展示
-        StartDialogue(dialogueData.entryNode);
+        StartDialogueNode(dialogueData.entryNode);
     }
 
     private DialogueNode currentNode;
-    private int currentLineIndex=-1;
+    private int currentLineIndex = -1;
 
-    public DialogueNode.DialogueLine line=>currentNode.lines[currentLineIndex];
-    public DialogueNode.DialogueOption option=>currentNode.options[currentLineIndex];
+    public DialogueNode.DialogueLine line => currentNode.lines[currentLineIndex];
+    public DialogueNode.DialogueOption option => currentNode.options[currentLineIndex];
 
-    private void StartDialogue(DialogueNode node)
+    private void StartDialogueNode(DialogueNode node)
     {
-        //----此处修改过源代码
-        // 显示对话UI
-        GameEventBus.Instance.Trigger(new ShowDialogueUI());
-        
-        currentNode = node;
-        NextDialogue();
+        if (node == null)
+        {
+            GameEventBus.Instance.Trigger(new HideDialogueUI());
+        }
+        else
+        {
+            //----此处修改过源代码
+            // 显示对话UI
+            GameEventBus.Instance.Trigger(new ShowDialogueUI());
+
+            currentNode = node;
+            NextDialogue();
+        }
+
     }
 
     public void NextDialogue()
     {
-        if(currentNode == null){
+        if (currentNode == null)
+        {
             Debug.LogError("没有加载对话文件");
             return;
-        } 
-        if (currentLineIndex < currentNode.lines.Count-1)
+        }
+        if (currentLineIndex < currentNode.lines.Count - 1)
         {
             currentLineIndex++;
             //TODO 通过事件处理，跟新对话ui显示文本，无选项更新
@@ -70,34 +88,45 @@ public class DialoguePlayer : MonoBehaviour
         }
         else
         {
-            //TODO 通过事件处理，跟新对话ui显示文本，有选项更新
-            GameEventBus.Instance.Trigger(
-                new UpdateDialogueProgress(
-                    currentNode.lines[currentLineIndex],
-                    currentNode.options
-                )
-            );
-            EndDialogue();
+            if (currentNode.options == null || currentNode.options.Count == 0)
+            {
+                EndAllDialogue();
+                return;
+            }
+            else
+            {
+                //TODO 通过事件处理，跟新对话ui显示文本，有选项更新
+                GameEventBus.Instance.Trigger(
+                    new UpdateDialogueProgress(
+                        currentNode.lines[currentLineIndex],
+                        currentNode.options
+                    )
+                );
+            }
         }
+
+        Debug.Log($"{currentLineIndex} +{currentLineIndex < currentNode.lines.Count - 1}");
     }
 
     public void UpdateDialogue(int option)
     {
-        currentNode = currentDialogueData.nodes[
-                            currentNode.options[option].nextNodeId
-                        ];
-        currentLineIndex = 0;
-        StartDialogue(currentNode);
+        DialogueNode nextNode = currentDialogueData.nodes?[
+                    currentNode.options[option].nextNodeId
+                ];
+        EndDialogueNode();
+        currentNode = nextNode;
+        StartDialogueNode(currentNode);
     }
 
-    public void EndDialogue()
+    public void EndDialogueNode()
     {
-        Debug.Log("某次对话结束");
         currentNode = null;
         currentLineIndex = -1;
-
-         // 隐藏对话UI---此处修改过源代码
-        GameEventBus.Instance.Trigger(new HideDialogueUI());
     }
 
+    public void EndAllDialogue()
+    {
+        EndDialogueNode();
+        GameEventBus.Instance.Trigger(new HideDialogueUI());
+    }
 }

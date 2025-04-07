@@ -7,7 +7,7 @@ using UnityEngine;
 public struct UpdateDialogueProgress : IEvent
 {
     public void OnEvent(){
-        Debug.Log("更新当前对话");
+        
     }
     public DialogueNode.DialogueLine line;
     public List<DialogueNode.DialogueOption> option;

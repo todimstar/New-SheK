@@ -12,7 +12,6 @@ public class DialogueUI : BasePanel
     public GameObject textObj;
     public GameObject optionBtn_Copy;
     public GameObject nextBtn;
-    public GameObject dialoguePanel; // 整个对话框面板
     
     private List<GameObject> optionsBtn = new();
     
@@ -70,8 +69,10 @@ public class DialogueUI : BasePanel
         else
         {
             nextBtn.SetActive(true);
-            HideOptions();
+            ClearOptions();
         }
+
+        if(e.option==null && e.line==null){}
     }
     
     // 设置对话文本
@@ -85,12 +86,13 @@ public class DialogueUI : BasePanel
     public void SetDialogueOption(List<DialogueNode.DialogueOption> options)
     {
         // 清除旧选项
-        HideOptions();
-        
+        ClearOptions();
+        Vector3 position= optionBtn_Copy.transform.localPosition;
         // 创建新选项
         for(int i = 0; i < options.Count; i++)
         {
             GameObject newBtn = Instantiate(optionBtn_Copy, optionBtn_Copy.transform.parent);
+            newBtn.transform.localPosition = position+new Vector3(0,50*i,0);
             newBtn.SetActive(true);
             
             int optionIndex = i; // 避免闭包问题
@@ -102,7 +104,8 @@ public class DialogueUI : BasePanel
     }
     
     // 隐藏所有选项
-    private void HideOptions()
+    // 2025-04-07 HideOptions()->ClearOptions() 我改了个名字
+    private void ClearOptions()
     {
         foreach(var btn in optionsBtn)
         {
@@ -115,26 +118,13 @@ public class DialogueUI : BasePanel
     private void OnOptionSelected(int optionIndex)
     {
         GameEventBus.Instance.Trigger(new ChooseDialogueOption(optionIndex));
-        HideOptions();
-        nextBtn.SetActive(true);
     }
     
     // Next按钮点击事件
     public void NextBtn_Event()
     {
+        Debug.Log("nextBtn_Event");
         GameEventBus.Instance.Trigger(new NextDialogueProgress());
     }
     
-    // 重写Show/Hide方法
-    public override void Show()
-    {
-        base.Show();
-        // 可以添加显示动画
-    }
-    
-    public override void Hide()
-    {
-        base.Hide();
-        // 可以添加隐藏动画
-    }
 }
