@@ -249,6 +249,27 @@ public class PlayerHUDUI : BasePanel
         // 日志记录
         Debug.Log($"心情值变化: {oldValue} -> {newValue}, 心情状态: {stateText}");
 
+        // 显示对应特效
+        switch (moodState)
+        {
+            case MoodState.VeryLonely:
+                EffectManager.Instance.ShowEffect(EffectType.VeryLonely);//若无duration参数则默认3秒后消失
+                break;
+            case MoodState.Introverted:
+                EffectManager.Instance.ShowEffect(EffectType.Introverted);
+                break;
+            // ...其他状态
+            case MoodState.Normal:
+                EffectManager.Instance.ShowEffect(EffectType.Normal);
+                break;
+            case MoodState.Extroverted:
+                EffectManager.Instance.ShowEffect(EffectType.Extroverted);
+                break;
+            case MoodState.SuperSocial:
+                EffectManager.Instance.ShowEffect(EffectType.SuperSocial);
+                break;
+        }
+
         // 可以在这里添加其他心情效果，如粒子效果、音效等
     }
 

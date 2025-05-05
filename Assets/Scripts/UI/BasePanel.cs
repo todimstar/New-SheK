@@ -11,15 +11,18 @@ public class BasePanel : MonoBehaviour
     /// </summary>
     public void Init()
     {
+        Debug.Log($"BasePanel.Init: 注册面板 {this.GetType().Name}");
         PanelManager.Instance.RegisterPanel(this);
     }
     public virtual void Show()
     {
+        Debug.Log($"BasePanel.Show: 显示面板 {this.GetType().Name}");
         this.gameObject.SetActive(true);
     }
 
     public virtual void Hide()
     {
+        Debug.Log($"BasePanel.Hide: 隐藏面板 {this.GetType().Name}");
         this.gameObject.SetActive(false);
     }
 }//2025.03.20 15:48 对比一下两套UI框架代码，选择性吸收

@@ -88,7 +88,7 @@ public class PlayStopUI : BasePanel
     public void OnSettingButtonClick()
     {
         Debug.Log("设置按钮点击事件");
-        // 隐藏当前暂停面板（不关闭）
+        // 直接关闭Stop面板
         PanelManager.Instance.ClosePanel(typeof(PlayStopUI), PanelManager.PanelLayer.PopWindow);
         // 打开设置面板
         PanelManager.Instance.OpenPanel(typeof(SettingUI));

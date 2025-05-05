@@ -28,6 +28,7 @@ public class PanelManager : MonoBehaviour
     {
         if (_instance != null && _instance != this)
         {
+            Debug.LogWarning("面板管理器已存在，销毁新的");
             Destroy(gameObject);
         }
         else
@@ -55,15 +56,24 @@ public class PanelManager : MonoBehaviour
     {
         // 获取面板实际运行时类型，而不是编译时类型
         Type panelType = panel.GetType();
+        Debug.Log("注册面板: " + panelType.Name);
 
         // 检查该类型是否已经注册过
         if (panelDict.ContainsKey(panelType))
         {
+            Debug.Log("面板已存在，不重复注册: " + panelType.Name);
             return;
         }
 
         // 以面板的实际类型作为键，添加到字典
         panelDict.Add(panelType, panel);
+
+        // 打印当前注册的所有面板
+        Debug.Log("当前已注册面板数量: " + panelDict.Count);
+        foreach (var key in panelDict.Keys)
+        {
+            Debug.Log("- 已注册: " + key.Name + " -> " + panelDict[key].name);
+        }
     }
 
     /*#region 切换场景时用于销毁为空的已注册的面板
@@ -130,6 +140,7 @@ public class PanelManager : MonoBehaviour
     /// <param name="panel"></param>
     public void OpenPanel(Type panel, PanelLayer layer = PanelLayer.Normal)
     {
+        Debug.Log("尝试打开面板: " + panel.Name);
 
         // 确保该层级的栈已经初始化
         if (!UITable.ContainsKey(layer))
@@ -137,6 +148,19 @@ public class PanelManager : MonoBehaviour
             UITable[layer] = new Stack<BasePanel>();
         }
 
+        // 确保面板已注册
+        if (!panelDict.ContainsKey(panel))
+        {
+            Debug.LogError($"层级{layer}的面板 {panel.Name} 尚未注册！");
+
+            // 打印当前注册的所有面板
+            Debug.Log($"层级{layer}当前已注册面板: ");
+            foreach (var key in panelDict.Keys)
+            {
+                Debug.Log("- 已注册: " + key.Name);
+            }
+            return;
+        }
 
         Debug.Log($"面板是层级{layer}");
         // 如果是PopWindow层级，直接显示
@@ -166,6 +190,8 @@ public class PanelManager : MonoBehaviour
     /// </summary>
     public void ClosePanel(Type panel, PanelLayer layer = PanelLayer.Normal)
     {
+        Debug.Log("尝试关闭面板: " + panel.Name);
+
         // 确保该层级的栈已经初始化
         if (!UITable.ContainsKey(layer) || UITable[layer].Count == 0)
         {
@@ -174,9 +200,11 @@ public class PanelManager : MonoBehaviour
         }
 
         BasePanel topPanel = UITable[layer].Peek();
+        Debug.Log("栈顶面板类型: " + topPanel.GetType().Name);
 
         if (UITable[layer].Peek().GetType() == panel)//第一个就是，直接弹出并隐藏
         {
+            Debug.Log("找到匹配面板，正在关闭: " + panel.Name);
             UITable[layer].Pop().Hide();
             if (UITable[layer].Count > 0)
             {
@@ -185,22 +213,22 @@ public class PanelManager : MonoBehaviour
         }
         else//在更深层的话，需要向下寻找删除隐藏并恢复其余上层面板怪怪的逻辑，之后看效果再说
         {
-            
+            Debug.LogWarning("未在栈顶找到匹配面板，尝试在栈内查找");
             Stack<BasePanel> temp = new();
             while (UITable[layer].Count > 0)
             {
                 BasePanel currentPanel = UITable[layer].Pop();
-                
+                Debug.Log("检查面板: " + currentPanel.GetType().Name);
 
                 if (currentPanel.GetType() == panel)
                 {
-                    
+                    Debug.Log("在栈内找到匹配面板，正在关闭: " + panel.Name);
                     currentPanel.Hide();
                     break;
                 }
                 temp.Push(currentPanel);
             }
-            
+            Debug.Log("恢复其他面板到栈中");
             while (temp.Count > 0)
             {
                 UITable[layer].Push(temp.Pop());
