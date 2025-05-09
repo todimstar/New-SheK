@@ -23,6 +23,8 @@ public class PlayerHUDUI : BasePanel
     [SerializeField] private TextMeshProUGUI questTypeText;       // 任务类型文本，默认显示“主线任务：”
     [SerializeField] private TextMeshProUGUI questDescriptionText; // 任务描述文本
 
+    [SerializeField] private GameObject reminder;
+
     /// <summary>
     /// 心情状态枚举
     /// </summary>
@@ -44,11 +46,25 @@ public class PlayerHUDUI : BasePanel
         // 注册菜单按钮点击事件
         stopButton.GetComponent<Button>().onClick.AddListener(OnStopButtonClick);
 
+        GameEventBus.Instance.Subscribe<QuestionTextUpdate>(QuestionTextUpdateHandle);
+        GameEventBus.Instance.Subscribe<ReminderUIUpdate>(ReminderUIUpdateHandle);
+
         // 订阅心情变化事件
         if (moodManager != null)
         {
             moodManager.OnMoodChanged += OnMoodChanged;
         }
+
+        reminder.SetActive(false);
+    }
+
+    private void QuestionTextUpdateHandle(QuestionTextUpdate e)
+    {
+        UpdateQuestInfo("主线任务",e.text);
+    }
+    private void ReminderUIUpdateHandle(ReminderUIUpdate e)
+    {
+        reminder.SetActive(e.isShow);
     }
 
     #region 暂停面板相关
@@ -58,20 +74,16 @@ public class PlayerHUDUI : BasePanel
         // 按ESC键打开/关闭暂停面板
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Debug.Log("检测到ESC键按下");
-
             //根据PlayStopUI的单例isGamePaused状态，决定是否打开/关闭暂停面板
             if (PlayStopUI.isGamePaused)
             {
                 PlayStopUI playStopUI = FindObjectOfType<PlayStopUI>();
                 playStopUI.OnCloseButtonClick();
-                Debug.Log("PlayerHUDUI尝试恢复游戏");
                 PlayStopUI.isGamePaused = false;
             }
             else
             {
                 OnStopButtonClick();
-                Debug.Log("PlayerHUDUI尝试暂停游戏");
                 PlayStopUI.isGamePaused = true;
             }
         }
@@ -85,7 +97,6 @@ public class PlayerHUDUI : BasePanel
     public void OnStopButtonClick()
     {
         // 暂停按钮点击事件
-        Debug.Log("暂停按钮点击事件");
         if (PlayStopUI.isGamePaused)
         {
             //关闭stop面板
@@ -156,8 +167,6 @@ public class PlayerHUDUI : BasePanel
         {
             questDescriptionText.text = description;
         }
-
-        Debug.Log($"任务已更新: {questType} - {description}");
     }
 
     /// <summary>
@@ -167,8 +176,6 @@ public class PlayerHUDUI : BasePanel
     {
         questType = questTypeText != null ? questTypeText.text : string.Empty;
         description = questDescriptionText != null ? questDescriptionText.text : string.Empty;
-
-        Debug.Log($"当前任务信息: {questType} - {description}");
     }
 
     /// <summary>
@@ -185,8 +192,6 @@ public class PlayerHUDUI : BasePanel
         {
             questDescriptionText.text = string.Empty;
         }
-
-        Debug.Log("任务显示已清除");
     }
 
     #endregion
@@ -246,8 +251,7 @@ public class PlayerHUDUI : BasePanel
             tmpText.text = $"心情: {stateText} ({Mathf.RoundToInt(newValue)}%)";
         }
 
-        // 日志记录
-        Debug.Log($"心情值变化: {oldValue} -> {newValue}, 心情状态: {stateText}");
+        // 日志记
 
         // 显示对应特效
         switch (moodState)

@@ -47,7 +47,7 @@ public class DialoguePlayer : MonoBehaviour
     }
 
     private DialogueNode currentNode;
-    private int currentLineIndex = -1;
+    public int currentLineIndex = -1;
 
     public DialogueNode.DialogueLine line => currentNode.lines[currentLineIndex];
     public DialogueNode.DialogueOption option => currentNode.options[currentLineIndex];
@@ -104,8 +104,6 @@ public class DialoguePlayer : MonoBehaviour
                 );
             }
         }
-
-        Debug.Log($"{currentLineIndex} +{currentLineIndex < currentNode.lines.Count - 1}");
     }
 
     public void UpdateDialogue(int option)

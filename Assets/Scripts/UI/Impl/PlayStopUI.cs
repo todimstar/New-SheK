@@ -51,8 +51,6 @@ public class PlayStopUI : BasePanel
         // 暂停游戏时间
         Time.timeScale = 0f;
         isGamePaused = true;
-
-        Debug.Log("游戏已暂停");
     }
 
     /// <summary>
@@ -63,8 +61,6 @@ public class PlayStopUI : BasePanel
         // 恢复游戏时间
         Time.timeScale = 1f;
         isGamePaused = false;
-
-        Debug.Log("游戏已恢复");
     }
 
     /// <summary>
@@ -72,7 +68,6 @@ public class PlayStopUI : BasePanel
     /// </summary>
     public void OnCloseButtonClick()
     {
-        Debug.Log("关闭按钮点击事件");
         // 关闭面板并暂停游戏
         PanelManager.Instance.ClosePanel(typeof(PlayStopUI), PanelManager.PanelLayer.PopWindow);
 
@@ -87,7 +82,6 @@ public class PlayStopUI : BasePanel
     /// </remarks>
     public void OnSettingButtonClick()
     {
-        Debug.Log("设置按钮点击事件");
         // 直接关闭Stop面板
         PanelManager.Instance.ClosePanel(typeof(PlayStopUI), PanelManager.PanelLayer.PopWindow);
         // 打开设置面板

@@ -3197,7 +3197,7 @@ GameObject:
   - component: {fileID: 635785459}
   - component: {fileID: 635785463}
   m_Layer: 5
-  m_Name: DialogueUI-tmp
+  m_Name: DialogueUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

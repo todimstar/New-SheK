@@ -38,7 +38,6 @@ public class QuestManager : MonoBehaviour
     private void UpdateQuestProgressHandler(UpdateQuestProgress data)
     {
         UpdateQuestProgress(data.questID);
-        Debug.Log($"更新任务 {data.questID} 进度");
     }
 
     /// <summary>
@@ -84,9 +83,13 @@ public class QuestManager : MonoBehaviour
     /// 接受任务
     /// </summary>
     /// <param name="quest">任务信息</param>
-    public void AcceptQuest(QuestData quest)
+    public bool AcceptQuest(QuestData quest)
     {
-        if (!TryAcceptQuest(quest)) return;
+        if (!TryAcceptQuest(quest)) return false;
+
+        if(!questObjectivesTable.ContainsKey(quest.questID)){
+            questObjectivesTable[quest.questID]=new();
+        }
 
         QuestInstance questInstance = new QuestInstance(
             quest.questID,
@@ -101,7 +104,9 @@ public class QuestManager : MonoBehaviour
             objective.isActive = true;
         }
 
-        Debug.Log($"成功接受任务: {quest.questName}");
+        GameEventBus.Instance.Trigger(new QuestionTextUpdate(quest.questDesc));
+
+        return true;
     }
     /// <summary>
     /// 更新任务进度
@@ -124,7 +129,7 @@ public class QuestManager : MonoBehaviour
     /// <param name="questID">任务的 id </param>
     private void CompleteQuest(int questID)
     {
-        Debug.Log($"{this.activeQuest[questID].questID}任务完成");
+        GameEventBus.Instance.Trigger(new QuestionTextUpdate("任务完成"));
         // TODO: 任务完成
     }
 

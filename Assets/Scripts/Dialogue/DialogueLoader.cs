@@ -43,7 +43,6 @@ public class DialogueLoader
         {
             if (node.id.Equals("entry"))
             {
-                Debug.Log("entry node found");
                 data.entryNode = node;
             }
             data.nodes.Add(node.id, node);

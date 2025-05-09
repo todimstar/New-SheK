@@ -56,7 +56,6 @@ public class InteractionDetector : MonoBehaviour
     private IEnumerator DetectionRoutine() {
         while(true) {
             SetRay();
-            Debug.Log("Detecting");
             if(Physics.Raycast(ray, out RaycastHit hit, detectRange, interactableLayer)) {
 
                 IInteractable interactable = hit.collider.GetComponent<IInteractable>();    // 检测物体需要要实现IInteractable接口的脚步
@@ -67,12 +66,16 @@ public class InteractionDetector : MonoBehaviour
                         currentTarget?.OnDetectionExit(); // 前一个目标退出
                         currentTarget = interactable;
                         currentTarget.OnDetectionEnter();
+
+                        GameEventBus.Instance.Trigger(new ReminderUIUpdate(true));
                     }
                 }
             } else {
                 // 范围内没有物体，当前存储的可交互物体退出
                 currentTarget?.OnDetectionExit();
                 currentTarget = null;
+
+                GameEventBus.Instance.Trigger(new ReminderUIUpdate(false));
             }
             yield return new WaitForSeconds(detectFrequency); // 性能优化，每 detectFrequency 秒检测一次
         }

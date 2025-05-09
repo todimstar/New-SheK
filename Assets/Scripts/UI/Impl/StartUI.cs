@@ -18,7 +18,6 @@ public class StartUI : BasePanel
     public void Click_StartBtn()
     {
         // 开始游戏按钮点击事件
-        Debug.Log("开始游戏按钮点击事件");
 
         // 加载场景
         // LoadGameScene();
@@ -36,21 +35,18 @@ public class StartUI : BasePanel
     public void Click_ContiueBtn()
     {
         // 继续游戏按钮点击事件
-        Debug.Log("继续游戏按钮点击事件");
         //之后接到存档系统，再进行处理
     }
 
     public void Click_SettingBtn()
     {
         // 设置按钮点击事件
-        Debug.Log("设置按钮点击事件");
         PanelManager.Instance.OpenPanel(typeof(SettingUI)); //2025.04.02 统一设置面板
     }
 
     public void Click_ExitBtn()
     {
         // 退出按钮点击事件
-        Debug.Log("退出按钮点击事件");
         //测试一下关闭后有没有多余的东西
         PanelManager.Instance.ClosePanel(typeof(StartUI));
     }

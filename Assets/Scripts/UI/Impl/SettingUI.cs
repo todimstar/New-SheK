@@ -59,14 +59,13 @@ public class SettingUI : BasePanel
     {
         if (soundButtonText)
         {
-            Debug.Log("soundButtonText: " + soundButtonText.name);
 
             // 尝试获取TextMeshPro组件
             TextMeshProUGUI tmpText = soundButtonText.GetComponent<TextMeshProUGUI>();
             if (tmpText != null)
             {
                 tmpText.text = soundOn ? "音效: 开" : "音效: 关";
-                Debug.Log("设置TMP文本为: " + tmpText.text);
+
                 return;
             }
 
@@ -75,7 +74,6 @@ public class SettingUI : BasePanel
             if (tmpText != null)
             {
                 tmpText.text = soundOn ? "音效: 开" : "音效: 关";
-                Debug.Log("设置子物体TMP文本为: " + tmpText.text);
                 return;
             }
 
@@ -84,7 +82,6 @@ public class SettingUI : BasePanel
             if (textComponent != null)
             {
                 textComponent.text = soundOn ? "音效: 开" : "音效: 关";
-                Debug.Log("设置传统Text文本为: " + textComponent.text);
                 return;
             }
 
@@ -93,7 +90,6 @@ public class SettingUI : BasePanel
             if (textComponent != null)
             {
                 textComponent.text = soundOn ? "音效: 开" : "音效: 关";
-                Debug.Log("设置子物体传统Text文本为: " + textComponent.text);
                 return;
             }
 
@@ -111,7 +107,6 @@ public class SettingUI : BasePanel
     private void btn_sound_clickEvent()
     {
         soundOn = !soundOn;
-        Debug.Log("声音状态: " + (soundOn ? "开启" : "关闭"));
 
         // 这里可以添加音效控制代码
         // 例如: AudioListener.volume = soundOn ? 1 : 0;
@@ -124,7 +119,6 @@ public class SettingUI : BasePanel
     /// </summary>
     private void btn_scene_clickEvent()
     {
-        Debug.Log("场景按钮点击");
     }
 
 
@@ -133,7 +127,6 @@ public class SettingUI : BasePanel
     /// </summary>
     private void btn_exitEvent()
     {
-        Debug.Log("退出按钮点击事件");
         PanelManager.Instance.CloseAllPanels();
         PanelManager.Instance.OpenPanel(typeof(StartUI));
     }
