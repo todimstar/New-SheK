@@ -224,7 +224,7 @@ public class PlayerHUDUI : BasePanel
         switch (state)
         {
             case MoodState.VeryLonely:
-                return "孤独";
+                return "汗颜";
             case MoodState.Introverted:
                 return "内向";
             case MoodState.Normal:
@@ -249,6 +249,8 @@ public class PlayerHUDUI : BasePanel
         {
             TextMeshProUGUI tmpText = moodText.GetComponent<TextMeshProUGUI>();
             tmpText.text = $"心情: {stateText} ({Mathf.RoundToInt(newValue)}%)";
+        }else{
+            Debug.Log("找不到TextMeshProUGUI组件");
         }
 
         // 日志记

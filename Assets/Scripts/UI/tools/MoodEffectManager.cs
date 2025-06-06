@@ -41,7 +41,7 @@ public class EffectManager : MonoBehaviour
     /// </summary>
     /// <param name="type">特效类型</param>
     /// <param name="duration">持续时间(0表示不自动销毁)</param>
-    public void ShowEffect(EffectType type, float duration = 3f)
+    public void ShowEffect(EffectType type, float duration = 10f)
     {
         // 如果该类型特效已存在且不想重复显示，先销毁
         if (activeEffects.ContainsKey(type))
